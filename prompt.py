@@ -2,7 +2,9 @@ import logging
 from typing import Dict, List, Tuple
 
 
-def build_prompt(query: str, results: List[Tuple[int, float]], document_mapping: Dict[int, str]) -> Dict[str, str]:
+def build_prompt(
+    query: str, results: List[Tuple[int, float]], document_mapping: Dict[int, str]
+) -> Dict[str, str]:
     """
     Build a prompt for the LLM based on the query and retrieved context.
     """
@@ -25,9 +27,7 @@ Here is the information you have retrieved:
         for idx, score in results
     )
     user_prompt = system_prompt + user_prompt + f"\n\nQUESTION:\n{query}"
-    
-    messages = [
-        {"role": "user", "content": user_prompt}
-    ]
+
+    messages = [{"role": "user", "content": user_prompt}]
     logger.debug("Constructed user prompt for LLM:\n%s", user_prompt)
     return messages

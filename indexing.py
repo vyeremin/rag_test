@@ -23,11 +23,7 @@ def split_by_sentence(text: str) -> List[str]:
 
     # Split on ., !, ?, followed by a space or end of string
     sentences = re.split(r"(?<=[.!?])\s+", text)
-    return [
-        sentence.strip()
-        for sentence in sentences
-        if sentence.strip() != ""
-    ]
+    return [sentence.strip() for sentence in sentences if sentence.strip() != ""]
 
 
 def create_sentences_with_context(text: str) -> List[str]:
@@ -63,14 +59,22 @@ def build_index_if_needed(data_load_path: str = DATA_LOAD_PATH) -> None:
         for key, lines in texts.items():
             header = lines[0]
             # Naive approach to add some "thinking"/"context" to the sentences, for demonstration purposes.
-            if header.startswith("From") or header.startswith("Between") or header.startswith("During"):
+            if (
+                header.startswith("From")
+                or header.startswith("Between")
+                or header.startswith("During")
+            ):
                 context = header.split(",")[0]
                 line = ". ".join(lines)
                 line = line.replace("Their", "Childrens")
                 line = line.replace("They", "Children")
-                passages = [passage for passage in line.split(".") if passage.strip() != ""]
-                sentences.append(passages[0].replace(',', ':', 1).strip())
-                sentences.extend("%s: %s" % (context, line.strip()) for line in passages[1:])
+                passages = [
+                    passage for passage in line.split(".") if passage.strip() != ""
+                ]
+                sentences.append(passages[0].replace(",", ":", 1).strip())
+                sentences.extend(
+                    "%s: %s" % (context, line.strip()) for line in passages[1:]
+                )
             else:
                 # for "noise" files we use first line as context and last line as footer, and split the middle part into passages by empty lines
                 context = header
@@ -79,14 +83,24 @@ def build_index_if_needed(data_load_path: str = DATA_LOAD_PATH) -> None:
                 for idx, line in enumerate(lines[1:-1]):
                     if line.strip() == "":
                         if len(passages) > 0:
-                            sentences.append("%s: %s. %s" % (context, ". ".join(passages), footer))
+                            sentences.append(
+                                "%s: %s. %s" % (context, ". ".join(passages), footer)
+                            )
                             passages = []
                         continue
-                    passages.append(line.strip(' .'))
+                    passages.append(line.strip(" ."))
                 if len(passages) > 0:
-                    sentences.append("%s: %s. %s" % (context, ". ".join(passages), footer))
-                texts[key] = [". ".join([line.strip(' .') for line in lines if line.strip() != ""])]
-        documents = [line for lines in texts.values() for line in lines if line.strip() != ""]
+                    sentences.append(
+                        "%s: %s. %s" % (context, ". ".join(passages), footer)
+                    )
+                texts[key] = [
+                    ". ".join(
+                        [line.strip(" .") for line in lines if line.strip() != ""]
+                    )
+                ]
+        documents = [
+            line for lines in texts.values() for line in lines if line.strip() != ""
+        ]
         # log documents and sentences for debugging
         for idx, document in enumerate(documents):
             logger.debug("Document %i: %s", idx, document[:100])
