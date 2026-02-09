@@ -1,0 +1,58 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "${command:pickArgs}"
+        },
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: indexing.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "indexing.py",
+            "console": "integratedTerminal",
+            "args": "'data/milestones/*.txt' -d",
+            "env": {
+                "KMP_DUPLICATE_LIB_OK": "TRUE",
+            }
+        },
+        {
+            "name": "Python Debugger: query.py LLM",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "query.py",
+            "console": "integratedTerminal",
+            "args": "'${command:pickArgs}' -d",
+            "env": {
+                "KMP_DUPLICATE_LIB_OK": "TRUE",
+                "TQDM_DISABLE": "1",
+            }
+        },
+        {
+            "name": "Python Debugger: query.py Template",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "query.py",
+            "console": "integratedTerminal",
+            "args": "'${command:pickArgs}' -d --use-template",
+            "env": {
+                "KMP_DUPLICATE_LIB_OK": "TRUE",
+                "TQDM_DISABLE": "1",
+            }
+        }
+    ]
+}
