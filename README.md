@@ -20,7 +20,7 @@ source .venv/bin/activate  # macOS/Linux
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Set environment variable (optional, for Intel MKL threading issues, that I found on my Mac)
+# 3. Set environment variable (Optional: Fixes Intel MKL threading issues on macOS)
 export KMP_DUPLICATE_LIB_OK=TRUE
 ```
 
@@ -60,11 +60,11 @@ python query.py "When do babies typically start sitting?" --use-thinking
 ### Data Preparation
 
 Place your data files (`.txt` format) in `data/milestones/`. The system will:
-1. Build indecies during first star
+1. Build indicies during first start
 2. Create document-level and sentence-level FAISS indexes
 3. Store kind of "doc data" (mappings) in `data/index/` directory
 
-Note: If you need rebuild index - just delete one of the files in the `data/index/` directory.
+Note: If you need rebuild the index - just delete one of the files in the `data/index/` directory.
 
 ## Architecture Overview
 
@@ -72,9 +72,9 @@ The prototype uses [Qwen/Qwen3-Embedding-0.6B](https://huggingface.co/Qwen/Qwen3
 
 The prototype uses [Qwen/Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B) LLM to figure out answer based on provided documents. 
 
-The selection of the models were based on trade-of between speed (crucual for prototype development) and quality of results.
+The selection of the models were based on trade-of between speed (crucial for prototype development) and quality of results.
 
-Two startegies to generate answer were implemented - LLM-based and template based. I didn't implement keyword based retrieval as I believe the good one requires adding a full text serch engine that will get project much complicated and takes more times than anticipated. At the same time adding a primitive text search (based on TF/IDF) will obviously produce weaker results.
+Two strategies to generate answer were implemented - LLM-based and template based. I didn't implement keyword based retrieval as I believe the good one requires adding a full text serch engine that will make the project much more complicated and takes more time than anticipated. At the same time adding a primitive text search (based on TF/IDF) will obviously produce weaker results.
 
 ### System Design Philosophy
 
